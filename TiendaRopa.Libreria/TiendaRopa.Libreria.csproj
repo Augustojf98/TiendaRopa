@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{646CC429-0A3E-4863-9EE0-BE15AC70116F}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>TiendaRopa.Consola</RootNamespace>
-    <AssemblyName>TiendaRopa.Consola</AssemblyName>
+    <ProjectGuid>{303A7000-8AD1-4B0D-B1E9-2EB9C7B17F08}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TiendaRopa.Libreria</RootNamespace>
+    <AssemblyName>TiendaRopa.Libreria</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,18 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\ConsolaHelper.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Classes\Camisa.cs" />
+    <Compile Include="Classes\Cliente.cs" />
+    <Compile Include="Classes\Enums.cs" />
+    <Compile Include="Classes\Indumentaria.cs" />
+    <Compile Include="Classes\IndumentariaCasual.cs" />
+    <Compile Include="Classes\IndumentariaDeportiva.cs" />
+    <Compile Include="Classes\IndumentariaFormal.cs" />
+    <Compile Include="Classes\Pantalon.cs" />
+    <Compile Include="Classes\TiendaRopa.cs" />
+    <Compile Include="Classes\TipoIndumentaria.cs" />
+    <Compile Include="Classes\Venta.cs" />
+    <Compile Include="Classes\VentaItem.cs" />
+    <Compile Include="Exceptions\SinIndumentariaException.cs" />
+    <Compile Include="Exceptions\SinStockException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TiendaRopa.Libreria\TiendaRopa.Libreria.csproj">
-      <Project>{303a7000-8ad1-4b0d-b1e9-2eb9c7b17f08}</Project>
-      <Name>TiendaRopa.Libreria</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
