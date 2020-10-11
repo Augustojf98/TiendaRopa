@@ -57,6 +57,7 @@ namespace TiendaRopa.Consola
                                 DevolverIndumentaria(Zara);
                                 break;
                             case "8":
+                                ListarVentas(Zara);
                                 break;
                             case "9":
                                 Console.Clear();
@@ -355,6 +356,8 @@ namespace TiendaRopa.Consola
                     if(tiendaRopa.BuscarPorCodigo(ci) != null)
                     {
                         tiendaRopa.DevolverItem(c, ci);
+
+                        Console.WriteLine(string.Format("Se ha devuelto la indumentaria de código {0} de la venta {1}",ci, c));
                     }
                 }
             }

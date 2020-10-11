@@ -96,24 +96,39 @@ namespace TiendaRopa.Libreria.Classes
 
                     if(venta != null)
                     {
-
-                        Indumentaria indumentaria = BuscarPorCodigo(codIndumentaria);
-
-                        if (indumentaria != null)
+                        if(venta.Estado != (int)Enums.EstadoVenta.Devuelto)
                         {
-                            VentaItem ventaItem = venta.BuscarPorCodigo(codIndumentaria);
-                            if (ventaItem != null)
+                            Indumentaria indumentaria = BuscarPorCodigo(codIndumentaria);
+
+                            if (indumentaria != null)
                             {
-                                venta.Items.Remove(ventaItem);
+                                VentaItem ventaItem = venta.BuscarPorCodigo(codIndumentaria);
+
+                                if (ventaItem != null)
+                                {
+                                    venta.Items.Remove(ventaItem);
+
+                                    AgregarStock(ventaItem.Prenda.Codigo, ventaItem.CantidadVendida);
+
+                                    if (venta.Items.Count() == 0)
+                                    {
+                                        venta.Estado = (int)Enums.EstadoVenta.Devuelto;
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("No existe ninguna prenda con el código " + codIndumentaria + " en la venta " + codVenta + ".");
+                                }
                             }
                             else
                             {
-                                throw new Exception("No existe ninguna prenda con el código " + codIndumentaria + " en la venta " + codVenta + ".");
+                                throw new Exceptions.SinIndumentariaException(codIndumentaria);
                             }
+
                         }
                         else
                         {
-                            throw new Exceptions.SinIndumentariaException(codIndumentaria);
+                            throw new Exception("La venta ya fue devuelta.");
                         }
                     }
                     else

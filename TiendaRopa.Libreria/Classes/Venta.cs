@@ -89,7 +89,14 @@ namespace TiendaRopa.Libreria.Classes
         {
             List<string> lv = new List<string>();
 
-            lv.Add(string.Format("Código venta: {0} - Cliente: {1} {2} ({3})", this._codigo, this._cliente.Nombre, this._cliente.Apellido, this._cliente.Codigo));
+            if(this.Estado == (int)Enums.EstadoVenta.Procesada)
+            {
+                lv.Add(string.Format("Código venta: {0} - Cliente: {1} {2} ({3} - PROCESADA)", this._codigo, this._cliente.Nombre, this._cliente.Apellido, this._cliente.Codigo));
+            }
+            else if (this.Estado == (int)Enums.EstadoVenta.Devuelto)
+            {
+                lv.Add(string.Format("Código venta: {0} - Cliente: {1} {2} ({3} - DEVUELTA)", this._codigo, this._cliente.Nombre, this._cliente.Apellido, this._cliente.Codigo));
+            }
 
             foreach (VentaItem vi in _items)
             {
