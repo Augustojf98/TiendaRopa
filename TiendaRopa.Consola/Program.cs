@@ -54,6 +54,7 @@ namespace TiendaRopa.Consola
                                 VenderIndumentaria(Zara);
                                 break;
                             case "7":
+                                DevolverIndumentaria(Zara);
                                 break;
                             case "8":
                                 break;
@@ -302,13 +303,15 @@ namespace TiendaRopa.Consola
                     int c = Helpers.ConsolaHelper.PedirInt("Código de indumentaria");
                     Console.Clear();
 
-                    tiendaRopa.BuscarPorCodigo(c);
+                    Console.WriteLine(tiendaRopa.BuscarPorCodigo(c).GetDetalle());
 
                     int cac = Helpers.ConsolaHelper.PedirInt("Cantidad a vender");
                     int cc = Helpers.ConsolaHelper.PedirInt("Código de cliente");
                     string ac = Helpers.ConsolaHelper.PedirString("Apellido del Cliente");
                     string nc = Helpers.ConsolaHelper.PedirString("Nombre del Cliente");
                     tiendaRopa.VenderItem(c, cac, cc, ac, nc);
+
+                    Console.WriteLine("\nSe han vendido " + cac + " unidades de la indumentaria de código " + c + "\n");
                 }
             }
             catch (Libreria.Exceptions.SinIndumentariaException ex)
@@ -327,12 +330,66 @@ namespace TiendaRopa.Consola
 
         private static void DevolverIndumentaria(Libreria.Classes.TiendaRopa tiendaRopa)
         {
+            try
+            {
+                Console.Clear();
+                ListarVentas(tiendaRopa);
 
+                int c = Helpers.ConsolaHelper.PedirInt("Código de la venta");
+
+                if(tiendaRopa.BuscarVentaPorCodigo(c) != null)
+                {
+                    Console.Clear();
+
+                    Libreria.Classes.Venta venta = tiendaRopa.BuscarVentaPorCodigo(c);
+
+                    int cantItems = venta.Items.Count();
+
+                    for (int i = 0; i < cantItems; i++)
+                    {
+                        Console.WriteLine("\nCódigo Indumentaria: " + venta.Items[i].Prenda.Codigo + " - Cantidad vendida: " + venta.Items[i].CantidadVendida + "\n");
+                    }
+
+                    int ci = Helpers.ConsolaHelper.PedirInt("un código de indumentaria del listado:\n");
+
+                    if(tiendaRopa.BuscarPorCodigo(ci) != null)
+                    {
+                        tiendaRopa.DevolverItem(c, ci);
+                    }
+                }
+            }
+            catch (Libreria.Exceptions.SinIndumentariaException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static void ListarVentas(Libreria.Classes.TiendaRopa tiendaRopa)
         {
-            tiendaRopa.ListarVentas();
+            try
+            {
+                foreach(Libreria.Classes.Venta venta in tiendaRopa.Ventas)
+                {
+                    int cantidadRegistros = venta.GetDetalle().Count();
+
+                    for(int i = 0; i < cantidadRegistros; i++)
+                    {
+                        Console.WriteLine(venta.GetDetalle()[i]);
+                    }
+                }
+            }
+            catch (Libreria.Exceptions.SinIndumentariaException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

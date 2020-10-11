@@ -59,10 +59,15 @@ namespace TiendaRopa.Libreria.Classes
                 {
                     if (indumentaria.GetStockActual >= cantidad)
                     {
-                        Venta venta = new Venta(codCliente, apeCliente, nomCliente);
+
+                        int nuevoCodigo = this.GetUltimoCodigoVenta() + 1;
+
+                        Venta venta = new Venta(nuevoCodigo, codCliente, apeCliente, nomCliente);
                         venta.AgregarItems(indumentaria, cantidad);
                         this.RetirarStock(codigoIndumentaria, cantidad);
                         venta.Estado = (int)Enums.EstadoVenta.Procesada;
+
+                        _ventas.Add(venta);
                     }
                     else
                     {
@@ -82,18 +87,62 @@ namespace TiendaRopa.Libreria.Classes
 
         public void DevolverItem(int codVenta, int codIndumentaria)
         {
+            if (!SinVentas)
+            {
+                if (!InventarioVacio)
+                {
 
+                    Venta venta = BuscarVentaPorCodigo(codVenta);
+
+                    if(venta != null)
+                    {
+
+                        Indumentaria indumentaria = BuscarPorCodigo(codIndumentaria);
+
+                        if (indumentaria != null)
+                        {
+                            VentaItem ventaItem = venta.BuscarPorCodigo(codIndumentaria);
+                            if (ventaItem != null)
+                            {
+                                venta.Items.Remove(ventaItem);
+                            }
+                            else
+                            {
+                                throw new Exception("No existe ninguna prenda con el código " + codIndumentaria + " en la venta " + codVenta + ".");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exceptions.SinIndumentariaException(codIndumentaria);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("No hay ninguna venta cargadas en el sistema con el código " + codVenta + ".");
+                    }
+                }
+                else
+                {
+                    throw new Exceptions.SinIndumentariaException();
+                }
+            }
+            else
+            {
+                throw new Exception("No hay ventas cargadas en el sistema aún.");
+            }
         }
 
-        public string ListarVentas()
+        public List<string> ListarVentas()
         {
+            List<string> lv = new List<string>();
+
             if (!SinVentas)
             {
                 foreach (Venta v in _ventas)
                 {
-                    return string.Format("", v.Codigo, v.Estado);
+                    lv.AddRange(v.GetDetalle());
                 }
-                return null;
+                return lv;
             }
             else
             {
@@ -335,7 +384,7 @@ namespace TiendaRopa.Libreria.Classes
         {
             if (!InventarioVacio)
             {
-                return _inventario.Max().Codigo;
+                return _inventario.LastOrDefault().Codigo;
             }
             else
             {
@@ -347,7 +396,7 @@ namespace TiendaRopa.Libreria.Classes
         {
             if (!SinVentas)
             {
-                return _ventas.Max().Codigo;
+                return _ventas.LastOrDefault().Codigo;
             }
             else
             {

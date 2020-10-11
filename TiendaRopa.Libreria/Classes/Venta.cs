@@ -13,9 +13,10 @@ namespace TiendaRopa.Libreria.Classes
         private int _estado;
         private int _codigo;
 
-        public Venta(int codCliente, string apeCliente, string nomCliente)
+        public Venta(int codigo, int codCliente, string apeCliente, string nomCliente)
         {
             var estadoInicial = (int)Enums.EstadoVenta.Iniciada;
+            this._codigo = codigo;
             this._estado = estadoInicial;
             this._items = new List<VentaItem>();
             this._cliente = new Cliente(codCliente, apeCliente, nomCliente);
@@ -82,6 +83,22 @@ namespace TiendaRopa.Libreria.Classes
             }
 
             return dineroTotal;
+        }
+
+        public List<string> GetDetalle()
+        {
+            List<string> lv = new List<string>();
+
+            lv.Add(string.Format("Código venta: {0} - Cliente: {1} {2} ({3})", this._codigo, this._cliente.Nombre, this._cliente.Apellido, this._cliente.Codigo));
+
+            foreach (VentaItem vi in _items)
+            {
+                lv.Add(string.Format("Código de prenda: {0} - Cantidad vendida: {1}", vi.Prenda.Codigo, vi.CantidadVendida));
+            }
+
+            lv.Add("\n");
+
+            return lv;
         }
 
     }
