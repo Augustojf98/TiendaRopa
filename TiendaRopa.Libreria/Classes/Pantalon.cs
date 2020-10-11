@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TiendaRopa.Libreria.Classes
 {
-    class Pantalon: Indumentaria
+    public class Pantalon: Indumentaria
     {
         private bool _tieneBolsillos;
         private string _material;
@@ -41,16 +41,18 @@ namespace TiendaRopa.Libreria.Classes
             this._material = material;
             this.Codigo = codigo;
             this.Talle = talle;
+            this.Precio = precio;
             this.TipoIndumentaria = tipoIndumentaria;
             this.AgregarUnidadesStock(3);
         }
 
-        public Pantalon(int codigo, string talle, bool tieneBolsillos, string material, TipoIndumentaria tipoIndumentaria, int stock)
+        public Pantalon(int codigo, double precio, string talle, bool tieneBolsillos, string material, TipoIndumentaria tipoIndumentaria, int stock)
         {
             this._tieneBolsillos = tieneBolsillos;
             this._material = material;
             this.Codigo = codigo;
             this.Talle = talle;
+            this.Precio = precio;
             this.TipoIndumentaria = tipoIndumentaria;
             this.AgregarUnidadesStock(stock);
         }

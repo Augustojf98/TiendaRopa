@@ -42,12 +42,16 @@ namespace TiendaRopa.Consola
                                 ListarIndumentaria(Zara);
                                 break;
                             case "3":
+                                AgregarStock(Zara);
                                 break;
                             case "4":
+                                ModificarIndumentaria(Zara);
                                 break;
                             case "5":
+                                EliminarIndumentaria(Zara);
                                 break;
                             case "6":
+                                VenderIndumentaria(Zara);
                                 break;
                             case "7":
                                 break;
@@ -117,6 +121,8 @@ namespace TiendaRopa.Consola
                         }
 
                         tiendaRopa.AgregarIndumentaria(talle, precio, tipoPrenda, tipoIndumentaria, origen, porcentajeAlgodon, tieneBolsillos, tieneEstampado, material, tipoManga);
+
+                        Console.WriteLine("\nSe agregó correctamente la indumentaria.\n\n\n");
                     }
                     else
                     {
@@ -161,22 +167,162 @@ namespace TiendaRopa.Consola
 
         private static void AgregarStock(Libreria.Classes.TiendaRopa tiendaRopa)
         {
+            try
+            {
+                ListarIndumentaria(tiendaRopa);
 
+                if (!tiendaRopa.InventarioVacio)
+                {
+                    int c = Helpers.ConsolaHelper.PedirInt("Código");
+
+                    Console.Clear();
+
+                    Console.WriteLine(tiendaRopa.BuscarPorCodigo(c).GetDetalle());
+
+                    int s = Helpers.ConsolaHelper.PedirInt("Stock a agregar");
+
+                    tiendaRopa.AgregarStock(c, s);
+
+                    Console.WriteLine("\nSe agregaron correctamente " + s + " unidades de stock de la indumentaria de código " + c);
+                }
+            }
+            catch (Libreria.Exceptions.SinIndumentariaException ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                bool quiereNuevamente = Helpers.ConsolaHelper.PedirBool("Si quiere intentar nuevamente (1 - Sí | 2 - No)");
+
+                if (quiereNuevamente == true)
+                {
+                    AgregarStock(tiendaRopa);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                bool quiereNuevamente = Helpers.ConsolaHelper.PedirBool("Si quiere intentar nuevamente (1 - Sí | 2 - No)");
+
+                if (quiereNuevamente == true)
+                {
+                    AgregarStock(tiendaRopa);
+                }
+            }
         }
 
         private static void ModificarIndumentaria(Libreria.Classes.TiendaRopa tiendaRopa)
         {
+            try
+            {
+                ListarIndumentaria(tiendaRopa);
 
+                if (!tiendaRopa.InventarioVacio)
+                {
+                    int c = Helpers.ConsolaHelper.PedirInt("Código");
+
+                    Console.Clear();
+
+                    Console.WriteLine(tiendaRopa.BuscarPorCodigo(c).GetDetalle());
+                    string t = Helpers.ConsolaHelper.PedirString("Talle");
+                    double p = Helpers.ConsolaHelper.PedirInt("Precio");
+
+                    bool tb = false;
+                    bool te = false;
+                    string m = string.Empty;
+                    string tm = string.Empty;
+
+                    if (tiendaRopa.BuscarPorCodigo(c) is Libreria.Classes.Pantalon)
+                    {
+                        tb = Helpers.ConsolaHelper.PedirBool("Si tiene bolsillos (1 - Sí | 2 - No)");
+                        m = Helpers.ConsolaHelper.PedirString("Material");
+                    }
+
+                    if (tiendaRopa.BuscarPorCodigo(c) is Libreria.Classes.Camisa)
+                    {
+                        te = Helpers.ConsolaHelper.PedirBool("Si tiene estampado (1 - Sí | 2 - No)");
+                        tm = Helpers.ConsolaHelper.PedirString("Tipo de manga");
+                    }
+
+                    tiendaRopa.ModificarIndumentaria(c, t, p, tb, te, m, tm);
+                }
+            }
+            catch(Libreria.Exceptions.SinIndumentariaException ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                bool quiereNuevamente = Helpers.ConsolaHelper.PedirBool("Si quiere intentar nuevamente (1 - Sí | 2 - No)");
+
+                if (quiereNuevamente == true)
+                {
+                    ModificarIndumentaria(tiendaRopa);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                bool quiereNuevamente = Helpers.ConsolaHelper.PedirBool("Si quiere intentar nuevamente (1 - Sí | 2 - No)");
+
+                if (quiereNuevamente == true)
+                {
+                    ModificarIndumentaria(tiendaRopa);
+                }
+            }
         }
 
         private static void EliminarIndumentaria(Libreria.Classes.TiendaRopa tiendaRopa)
         {
-
+            try
+            {
+                ListarIndumentaria(tiendaRopa);
+                if (!tiendaRopa.InventarioVacio)
+                {
+                    int c = Helpers.ConsolaHelper.PedirInt("Código");
+                    tiendaRopa.EliminarIndumentaria(c);
+                    Console.WriteLine("Se ha eliminado correctamente la indumentaria con el código " + c);
+                }
+            }
+            catch (Libreria.Exceptions.SinIndumentariaException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static void VenderIndumentaria(Libreria.Classes.TiendaRopa tiendaRopa)
         {
+            try
+            {
+                ListarIndumentaria(tiendaRopa);
+                if (!tiendaRopa.InventarioVacio)
+                {
+                    int c = Helpers.ConsolaHelper.PedirInt("Código de indumentaria");
+                    Console.Clear();
 
+                    tiendaRopa.BuscarPorCodigo(c);
+
+                    int cac = Helpers.ConsolaHelper.PedirInt("Cantidad a vender");
+                    int cc = Helpers.ConsolaHelper.PedirInt("Código de cliente");
+                    string ac = Helpers.ConsolaHelper.PedirString("Apellido del Cliente");
+                    string nc = Helpers.ConsolaHelper.PedirString("Nombre del Cliente");
+                    tiendaRopa.VenderItem(c, cac, cc, ac, nc);
+                }
+            }
+            catch (Libreria.Exceptions.SinIndumentariaException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Libreria.Exceptions.SinStockException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static void DevolverIndumentaria(Libreria.Classes.TiendaRopa tiendaRopa)

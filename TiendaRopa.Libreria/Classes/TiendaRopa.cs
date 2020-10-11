@@ -55,7 +55,7 @@ namespace TiendaRopa.Libreria.Classes
             if (!InventarioVacio)
             {
                 Indumentaria indumentaria = BuscarPorCodigo(codigoIndumentaria);
-                if(indumentaria.GetStockActual == 0)
+                if(indumentaria.GetStockActual != 0)
                 {
                     if (indumentaria.GetStockActual >= cantidad)
                     {

@@ -42,16 +42,18 @@ namespace TiendaRopa.Libreria.Classes
             this._tipoManga = tipoManga;
             this.Codigo = codigo;
             this.Talle = talle;
+            this.Precio = precio;
             this.TipoIndumentaria = tipoIndumentaria;
             this.AgregarUnidadesStock(3);
         }
 
-        public Camisa(int codigo, string talle, bool tieneEstampado, string tipoManga, TipoIndumentaria tipoIndumentaria, int stock)
+        public Camisa(int codigo, double precio, string talle, bool tieneEstampado, string tipoManga, TipoIndumentaria tipoIndumentaria, int stock)
         {
             this._tieneEstampado = tieneEstampado;
             this._tipoManga = tipoManga;
             this.Codigo = codigo;
             this.Talle = talle;
+            this.Precio = precio;
             this.TipoIndumentaria = tipoIndumentaria;
             this.AgregarUnidadesStock(stock);
         }
